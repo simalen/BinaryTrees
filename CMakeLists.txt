@@ -3,4 +3,4 @@ project(BinaryTrees C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(TestingC2 BSTree.c BSTree.h test_BSTree.c)
+add_executable(BinaryTrees BSTree.c BSTree.h test_BSTree.c)
