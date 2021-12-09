@@ -11,7 +11,6 @@ void testTree(BSTree tree);
   Ni far givetvis skriva en egen meny om ni vill*/
 void menuTree(BSTree tree);
 
-
 int main(void)
 {
     BSTree tree = emptyTree();
@@ -21,7 +20,6 @@ int main(void)
 
     return 0;
 }
-
 
 void testTree(BSTree tree)
 {
@@ -83,9 +81,7 @@ void testTree(BSTree tree)
     //Verifiera att tradet ar obalanserat
     assert(depth(tree) != minDepth(tree));
 
-    printInorder(tree, stdout);
     balanceTree(&tree);
-    printInorder(tree, stdout);
     assert(numberOfNodes(tree) == 10); // Verifiera att antalet noder ar detsamma
     assert(depth(tree) == minDepth(tree)); // Verifiera att tradet ar balanserat
 
@@ -105,15 +101,15 @@ void testTree(BSTree tree)
     removeElement(&tree, 9);
     /*Avkommentera rad 106-116 om du vid borttagning av nod med tvŒ barn vŠljer det minsta i hšger deltrŠd som ersŠttare (11 ersŠtter dŒ 9 i det hŠr testet), jŠmfšr dina utskrifter av trŠdet med de utskrifter som visar hur trŠdet bšr se ut. Om du behšver kan du justera mellanslagen i utskrifterna sŒ att formateringen ser bra ut i din konsoll. */
 
-    //printf("\nPreorder\nYour tree:    \n");
-    //printPreorder(tree, stdout);
-    //printf("\nCorrect tree: 3 2 1 11 5 4 7 6 8 15 13 14 18");
-    //printf("\nInorder\nYour tree:    \n");
-    //printInorder(tree, stdout);
-    //printf("\nCorrect tree: 1 2 3 4 5 6 7 8 11 13 14 15 18");
-    //printf("\nPostorder\nYour tree:    \n");
-    //printPostorder(tree, stdout);
-    //printf("\nCorrect tree: 1 2 4 6 8 7 5 14 13 18 15 11 3");
+    printf("\nPreorder\nYour tree:    \n");
+    printPreorder(tree, stdout);
+    printf("\nCorrect tree: 3 2 1 11 5 4 7 6 8 15 13 14 18");
+    printf("\nInorder\nYour tree:    \n");
+    printInorder(tree, stdout);
+    printf("\nCorrect tree: 1 2 3 4 5 6 7 8 11 13 14 15 18");
+    printf("\nPostorder\nYour tree:    \n");
+    printPostorder(tree, stdout);
+    printf("\nCorrect tree: 1 2 4 6 8 7 5 14 13 18 15 11 3");
 
 
 

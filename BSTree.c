@@ -8,20 +8,17 @@
 
 /* Statiska hjalpfunktioner anvands av andra funktioner i tradet och ska inte ligga i interfacet (anvandaren behover inte kanna till dessa) */
 
-/*  KLAR  */ //TODO: REMOVE
 int hasChildren(BSTree* tree) {
     if((*tree)->right == NULL && (*tree)->left == NULL) return 0;
     return 1;
 }
 
-/*  KLAR  */ //TODO: REMOVE
-// Har inte return i alla paths?
+//TODO: Har inte return i alla paths?
 BSTree * getSmallest(BSTree * tree) {
     if((*tree)->left != NULL) getSmallest(&(*tree)->left);
     else return tree;
 }
 
-/*  KLAR  */ //TODO: REMOVE
 static struct treeNode* createNode(int data)
 {
     struct treeNode * T = malloc(sizeof(struct treeNode));
@@ -33,7 +30,6 @@ static struct treeNode* createNode(int data)
     return T;
 }
 
-/*  KLAR  */ //TODO: REMOVE
 void writeToArray(const BSTree tree, int * array, int length) {
     if(isEmpty(tree)) return;
     BSTree * pTree = &tree;
@@ -58,8 +54,6 @@ static int* writeSortedToArray(const BSTree tree)
     return T;
 }
 
-/*  KLAR  */ //TODO: REMOVE
-// Har fel på datat i arrayen efter.
 struct treeNode * build(const int arr[], int start, int end) {
     if(start > end) return NULL;
     int mid = (start + end) / 2;
@@ -69,32 +63,22 @@ struct treeNode * build(const int arr[], int start, int end) {
     return node;
 }
 
-/*  KLAR  */ //TODO: REMOVE
-// Har fel på datat i arrayen efter.
 static void buildTreeSortedFromArray(BSTree* tree, const int arr[], int size)
 {
-    //printf_s("Array before sorting.\n");     //TODO: REMOVE
-    //for(int i = 0; i < size; i++) {          //TODO: REMOVE
-    //    printf_s("\nValue: (%d)", arr[i]);   //TODO: REMOVE
-    //}                                        //TODO: REMOVE
-    //printf_s("\nEnd of array.\n");           //TODO: REMOVE
     struct treeNode * builtTree = build(arr, 0, size-1);
     *tree = builtTree;
 }
 
-/*  KLAR  */ //TODO: REMOVE
 BSTree emptyTree(void)
 {
     return NULL;
 }
 
-/*  KLAR  */ //TODO: REMOVE
 int isEmpty(const BSTree tree)
 {
     return tree == NULL ? 1 : 0;
 }
 
-/*  KLAR  */ //TODO: REMOVE
 void insertSorted(BSTree* tree, int data)
 {
     if(*tree == NULL) {
@@ -102,58 +86,55 @@ void insertSorted(BSTree* tree, int data)
         return;
     }
     if(find(*tree, data) == 0) {
-        if((*tree)->data > data) insertSorted(&(*tree)->right, data);
-        else insertSorted(&(*tree)->left, data);
+        if((*tree)->data > data) insertSorted(&(*tree)->left, data);
+        else insertSorted(&(*tree)->right, data);
     }
     assert(find(*tree, data));
 }
 
-/*  KLAR  */ //TODO: REMOVE
 void printPreorder(const BSTree tree, FILE *textfile)
 {
     if(isEmpty(tree)) return;
+    if(tree == NULL) return;
     fprintf(textfile, "Node data: %d\n", tree->data);
-    if(tree->left != NULL) printPreorder(tree->left, stdout);
-    if(tree->right != NULL) printPreorder(tree->right, stdout);
+    printPreorder(tree->left, stdout);
+    printPreorder(tree->right, stdout);
 }
 
-/*  KLAR  */ //TODO: REMOVE
 void printInorder(const BSTree tree, FILE *textfile)
 {
     if(isEmpty(tree)) return;
-    if(tree->left != NULL) printPreorder(tree->left, stdout);
+    if(tree == NULL) return;
+    printInorder(tree->left, stdout);
     fprintf(textfile, "Node data: %d\n", tree->data);
-    if(tree->right != NULL) printPreorder(tree->right, stdout);
+    printInorder(tree->right, stdout);
 }
 
-/*  KLAR  */ //TODO: REMOVE
 void printPostorder(const BSTree tree, FILE *textfile)
 {
     if(isEmpty(tree)) return;
-    if(tree->left != NULL) printPreorder(tree->left, stdout);
-    if(tree->right != NULL) printPreorder(tree->right, stdout);
+    if(tree == NULL) return;
+    printPostorder(tree->left, stdout);
+    printPostorder(tree->right, stdout);
     fprintf(textfile, "Node data: %d\n", tree->data);
 }
 
-/*  KLAR  */ //TODO: REMOVE
-// Har inte return i alla paths?
+//TODO: Har inte return i alla paths?
 int find(const BSTree tree, int data)
 {
     if(isEmpty(tree)) return 0;
     if(tree == NULL) return 0;
     if(tree->data == data) return 1;
-    if(tree->data > data) find(tree->right, data);
-    else find(tree->left, data);
+    if(tree->data > data) find(tree->left, data);
+    else find(tree->right, data);
 }
 
-/*  KLAR  */ //TODO: REMOVE
-// Trädet är speglat?
 void removeElement(BSTree* tree, int data)
 {
+    BSTree* topView = tree;
     if(isEmpty(*tree)) return;
     if((*tree)->data == data) {
         if(!hasChildren(&(*tree))) {
-            //printf("\nI am removing 1 node with 0 children, My current value is (%d)\n", (*tree)->data); //TODO: REMOVE
             (*tree)->right = NULL;
             (*tree)->left = NULL;
             free(*tree);
@@ -161,20 +142,17 @@ void removeElement(BSTree* tree, int data)
         }
         else {
             if((*tree)->right != NULL && (*tree)->left != NULL) {
-                //printf("\nI am removing 1 node with 2 children (Left %d, Right %d), My current value is (%d)\n", (*tree)->left->data, (*tree)->right->data , (*tree)->data); //TODO: REMOVE
                 BSTree * toRemove = getSmallest(&(*tree)->right);
-                (*tree)->data = (*toRemove)->data;
-                free(*toRemove);
-                *toRemove = NULL;
+                int temp = (*toRemove)->data;
+                removeElement(topView, temp);
+                (*tree)->data = temp;
             }
             else if((*tree)->left == NULL) {
-                //printf("\nI am removing 1 node with 1 child (Right %d), My current value is (%d)\n", (*tree)->right->data , (*tree)->data); //TODO: REMOVE
                 BSTree remove = *tree;
                 *tree = (*tree)->right;
                 free(remove);
             }
             else {
-                //printf("\nI am removing 1 node with 1 child (Left %d), My current value is (%d)\n", (*tree)->left->data, (*tree)->data); //TODO: REMOVE
                 BSTree remove = *tree;
                 *tree = (*tree)->left;
                 free(remove);
@@ -182,13 +160,12 @@ void removeElement(BSTree* tree, int data)
         }
     }
     else {
-        if((*tree)->data > data) removeElement(&(*tree)->right, data);
-        else removeElement(&(*tree)->left, data);
+        if((*tree)->data > data) removeElement(&(*tree)->left, data);
+        else removeElement(&(*tree)->right, data);
     }
 }
 
-/*  KLAR  */ //TODO: REMOVE
-// isEmpty & tree != NULL gör samma sak?
+//TODO: isEmpty & tree != NULL gör samma sak?
 int numberOfNodes(const BSTree tree)
 {
     if(isEmpty(tree)) return 0;
@@ -196,7 +173,6 @@ int numberOfNodes(const BSTree tree)
     else return 0;
 }
 
-/*  KLAR  */ //TODO: REMOVE
 int depth(const BSTree tree)
 {
     if(isEmpty(tree)) return 0;
@@ -205,7 +181,6 @@ int depth(const BSTree tree)
     return max(left, right) + 1;
 }
 
-/*  KLAR  */ //TODO: REMOVE
 int minDepth(const BSTree tree)
 {
     if(isEmpty(tree)) return 0;
@@ -214,7 +189,6 @@ int minDepth(const BSTree tree)
     return ceil(calc);
 }
 
-/*  KLAR  */ //TODO: REMOVE
 void balanceTree(BSTree* tree)
 {
     if(isEmpty(*tree)) return;
@@ -223,7 +197,6 @@ void balanceTree(BSTree* tree)
     buildTreeSortedFromArray(tree, array, length);
 }
 
-/*  KLAR  */ //TODO: REMOVE
 void freeTree(BSTree* tree)
 {
     if(isEmpty(*tree)) return;
