@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(TestingC2 C)
+project(BinaryTrees C)
 
 set(CMAKE_C_STANDARD 99)
 
