@@ -11,6 +11,7 @@ void testTree(BSTree tree);
   Ni far givetvis skriva en egen meny om ni vill*/
 void menuTree(BSTree tree);
 
+
 int main(void)
 {
     BSTree tree = emptyTree();
@@ -20,6 +21,7 @@ int main(void)
 
     return 0;
 }
+
 
 void testTree(BSTree tree)
 {
@@ -99,6 +101,7 @@ void testTree(BSTree tree)
         insertSorted(&tree, arr2[i]);
     }
     removeElement(&tree, 9);
+
     /*Avkommentera rad 106-116 om du vid borttagning av nod med tvŒ barn vŠljer det minsta i hšger deltrŠd som ersŠttare (11 ersŠtter dŒ 9 i det hŠr testet), jŠmfšr dina utskrifter av trŠdet med de utskrifter som visar hur trŠdet bšr se ut. Om du behšver kan du justera mellanslagen i utskrifterna sŒ att formateringen ser bra ut i din konsoll. */
 
     printf("\nPreorder\nYour tree:    \n");

@@ -4,19 +4,14 @@
 #include <math.h>
 #include "BSTree.h"
 
-/*Det Šr helt tillŒtet att lŠgga till egna hjŠlpfunktioner men de befintliga funktionerna fŒr inte Šndras*/
-
-/* Statiska hjalpfunktioner anvands av andra funktioner i tradet och ska inte ligga i interfacet (anvandaren behover inte kanna till dessa) */
-
 int hasChildren(BSTree* tree) {
     if((*tree)->right == NULL && (*tree)->left == NULL) return 0;
     return 1;
 }
 
-//TODO: Har inte return i alla paths?
 BSTree * getSmallest(BSTree * tree) {
-    if((*tree)->left != NULL) getSmallest(&(*tree)->left);
-    else return tree;
+    if((*tree)->left != NULL) return getSmallest(&(*tree)->left);
+    return tree;
 }
 
 static struct treeNode* createNode(int data)
@@ -119,14 +114,12 @@ void printPostorder(const BSTree tree, FILE *textfile)
     fprintf(textfile, "Node data: %d\n", tree->data);
 }
 
-//TODO: Har inte return i alla paths?
 int find(const BSTree tree, int data)
 {
     if(isEmpty(tree)) return 0;
-    if(tree == NULL) return 0;
     if(tree->data == data) return 1;
-    if(tree->data > data) find(tree->left, data);
-    else find(tree->right, data);
+    if(tree->data > data) return find(tree->left, data);
+    return find(tree->right, data);
 }
 
 void removeElement(BSTree* tree, int data)
@@ -165,10 +158,8 @@ void removeElement(BSTree* tree, int data)
     }
 }
 
-//TODO: isEmpty & tree != NULL gör samma sak?
 int numberOfNodes(const BSTree tree)
 {
-    if(isEmpty(tree)) return 0;
     if(tree != NULL) return numberOfNodes(tree->left) + numberOfNodes(tree->right) + 1;
     else return 0;
 }
