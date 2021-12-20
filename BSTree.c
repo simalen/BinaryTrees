@@ -18,7 +18,7 @@ static struct treeNode* createNode(int data)
 {
     struct treeNode * T = malloc(sizeof(struct treeNode));
     assert(T != NULL);
-    if(T == NULL) return NULL;
+    if(T == NULL) abort();
     T->data = data;
     T->left = NULL;
     T->right = NULL;
@@ -186,6 +186,7 @@ void balanceTree(BSTree* tree)
     int length = numberOfNodes(*tree);
     int * array = writeSortedToArray(*tree);
     buildTreeSortedFromArray(tree, array, length);
+    free(array);
 }
 
 void freeTree(BSTree* tree)
