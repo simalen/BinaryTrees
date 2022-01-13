@@ -18,7 +18,7 @@ static struct treeNode* createNode(int data)
 {
     struct treeNode * T = malloc(sizeof(struct treeNode));
     assert(T != NULL);
-    if(T == NULL) abort();
+    if(T == NULL) return NULL;
     T->data = data;
     T->left = NULL;
     T->right = NULL;
@@ -27,17 +27,10 @@ static struct treeNode* createNode(int data)
 
 void writeToArray(const BSTree tree, int * array, int length) {
     if(isEmpty(tree)) return;
-    BSTree * pTree = &tree;
-    pTree = getSmallest(pTree);
-    if(tree->data > (*pTree)->data) {
-        array[length] = (*pTree)->data;
-        removeElement(pTree, (*pTree)->data);
-    }
-    else {
-        array[length] = tree->data;
-        removeElement(&tree, tree->data);
-    }
-    writeToArray(tree, array, length+1);
+    writeToArray(tree->left, array, length);
+    array[length] = tree->data;
+    length++;
+    writeToArray(tree->right, array, length);
 }
 
 static int* writeSortedToArray(const BSTree tree)
@@ -53,6 +46,7 @@ struct treeNode * build(const int arr[], int start, int end) {
     if(start > end) return NULL;
     int mid = (start + end) / 2;
     struct treeNode * node = createNode(arr[mid]);
+    if(node == NULL) return NULL;
     node->left = build(arr, start, mid-1);
     node->right = build(arr, mid+1, end);
     return node;
@@ -61,6 +55,8 @@ struct treeNode * build(const int arr[], int start, int end) {
 static void buildTreeSortedFromArray(BSTree* tree, const int arr[], int size)
 {
     struct treeNode * builtTree = build(arr, 0, size-1);
+    if(builtTree == NULL) return;
+    freeTree(tree);
     *tree = builtTree;
 }
 
@@ -192,8 +188,10 @@ void balanceTree(BSTree* tree)
 void freeTree(BSTree* tree)
 {
     if(isEmpty(*tree)) return;
-    while(!isEmpty(*tree)) removeElement(tree, (*tree)->data);
-    assert(isEmpty(*tree));
+    freeTree(&(*tree)->left);
+    freeTree(&(*tree)->right);
+    free(*tree);
+    *tree = NULL;
 }
 
 
